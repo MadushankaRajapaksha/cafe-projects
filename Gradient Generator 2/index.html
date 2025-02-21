@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Gradient Generator</title>
+  <style>
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      background: linear-gradient(to right, #ff7e5f, #feb47b);
+      transition: background 0.5s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .controls {
+      margin-bottom: 20px;
+    }
+
+    .controls input[type="color"] {
+      width: 70px;
+      height: 70px;
+      border: none;
+      padding: 0;
+      margin: 0 10px;
+      cursor: pointer;
+      background: none;
+    }
+
+    .css-code {
+      background: #fff;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Gradient Generator</h1>
+
+  <div class="controls">
+    <input type="color" id="color1" value="#ff7e5f" />
+    <input type="color" id="color2" value="#feb47b" />
+  </div>
+
+  <button id="randomBtn">Randomize Colors</button>
+
+  <h3>CSS Background:</h3>
+  <div class="css-code" id="cssOutput"></div>
+
+  <script>
+    const color1 = document.getElementById("color1");
+    const color2 = document.getElementById("color2");
+    const cssOutput = document.getElementById("cssOutput");
+    const randomBtn = document.getElementById("randomBtn");
+
+    // Function to update background gradient and output CSS code.
+    function setGradient() {
+      const gradientStyle = "linear-gradient(to right, " + color1.value + ", " + color2.value + ")";
+      document.body.style.background = gradientStyle;
+      cssOutput.textContent = "background: " + gradientStyle + ";";
+    }
+
+    // Function to generate a random hex color.
+    function getRandomColor() {
+      const randomColor = Math.floor(Math.random()*16777215).toString(16);
+      return "#" + ("000000" + randomColor).slice(-6);
+    }
+
+    // Event listeners for the color inputs.
+    color1.addEventListener("input", setGradient);
+    color2.addEventListener("input", setGradient);
+
+    // Randomize button event listener.
+    randomBtn.addEventListener("click", () => {
+      color1.value = getRandomColor();
+      color2.value = getRandomColor();
+      setGradient();
+    });
+
+    // Initialize the gradient display
+    setGradient();
+  </script>
+</body>
+</html>

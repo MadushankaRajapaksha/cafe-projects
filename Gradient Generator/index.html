@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gradient Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Gradient Generator</h1>
+    <div class="gradient-container">
+      <div class="gradient-preview"></div>
+    </div>
+    <div class="controls">
+      <label for="start-color">Start Color:</label>
+      <input type="color" id="start-color" value="#ff0000">
+      <label for="end-color">End Color:</label>
+      <input type="color" id="end-color" value="#00ff00">
+      <label for="steps">Steps:</label>
+      <input type="number" id="steps" value="10" min="2" max="100">
+      <button id="generate-btn">Generate</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

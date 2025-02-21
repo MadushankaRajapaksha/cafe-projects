@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simple Music Player</title>
+  <style>
+    body {
+      background: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    
+    .player-container {
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      padding: 20px;
+      width: 300px;
+      text-align: center;
+    }
+
+    .player-container h2 {
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .controls button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 15px;
+      margin: 0 5px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      outline: none;
+      transition: background-color 0.3s;
+    }
+
+    .controls button:hover {
+      background-color: #45a049;
+    }
+
+    .progress-container {
+      position: relative;
+      height: 8px;
+      background: #ddd;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 15px 0;
+    }
+
+    .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: #4CAF50;
+      width: 0%;
+      border-radius: 4px;
+    }
+
+    .time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="player-container">
+    <h2>My Music Player</h2>
+    <audio id="audio" src="your-audio-file.mp3"></audio>
+    <div class="controls">
+      <button id="playBtn">►</button>
+      <button id="stopBtn">■</button>
+    </div>
+    <div class="progress-container" id="progressContainer">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="time">
+      <span id="currentTime">0:00</span>
+      <span id="duration">0:00</span>
+    </div>
+  </div>
+
+  <script>
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const progress = document.getElementById('progress');
+    const progressContainer = document.getElementById('progressContainer');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+
+    // Play or pause the track
+    function togglePlay() {
+      if(audio.paused) {
+        audio.play();
+        playBtn.textContent = '❚❚';
+      } else {
+        audio.pause();
+        playBtn.textContent = '►';
+      }
+    }
+
+    // Stop the track (pause and reset time)
+    function stopTrack() {
+      audio.pause();
+      audio.currentTime = 0;
+      playBtn.textContent = '►';
+    }
+
+    // Update the progress bar and time display
+    function updateProgress() {
+      const { duration, currentTime } = audio;
+      // Calculate progress percentage
+      const percent = (currentTime / duration) * 100;
+      progress.style.width = percent + '%';
+
+      // Update time display
+      currentTimeEl.textContent = formatTime(currentTime);
+      durationEl.textContent = formatTime(duration);
+    }
+
+    // Format seconds into mm:ss
+    function formatTime(seconds) {
+      if (isNaN(seconds)) return '0:00';
+      const minutes = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return minutes + ':' + (secs < 10 ? '0' + secs : secs);
+    }
+
+    // Set audio currentTime on progress click
+    function setProgress(e) {
+      const width = this.clientWidth;
+      const clickX = e.offsetX;
+      const duration = audio.duration;
+      audio.currentTime = (clickX / width) * duration;
+    }
+
+    // Event listeners
+    playBtn.addEventListener('click', togglePlay);
+    stopBtn.addEventListener('click', stopTrack);
+    audio.addEventListener('timeupdate', updateProgress);
+    progressContainer.addEventListener('click', setProgress);
+
+    // Reset play button on track end
+    audio.addEventListener('ended', () => {
+      playBtn.textContent = '►';
+    });
+
+    // Update duration once metadata is loaded
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+    });
+  </script>
+</body>
+</html>
